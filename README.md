@@ -92,7 +92,7 @@ encrypt.password=${PASSWORD_IN_ENV_VARIABLE:Defaultpassword}
 ## ⚙️ How it Works
 
 - On startup, an `EnvironmentPostProcessor` scans all properties.
-- Any values starting with **`SECURE(`** are automatically decrypted.
+- Any values starting with **`SECURE(..)`** are automatically decrypted.
 - Result: Spring Boot receives the plaintext values without any code changes.
 
 ---
@@ -110,14 +110,3 @@ target/spring-security-crypto-cli-1.0.0.jar
 ```
 
 ---
-
-## ℹ️ Notes
-
-- Only works for string properties.
-- Salt is **always randomly generated** during encryption (best practice).
-- Compatible with Spring Boot 3.4.5 and Spring Security 6.4.5.
-
----
-
-Would you like a small diagram (e.g., Property Loading → Decrypt → App uses Plaintext) in ASCII or as a PNG to make it even clearer? 🎨  
-Let me know! 🚀
