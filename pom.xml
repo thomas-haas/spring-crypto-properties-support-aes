@@ -6,7 +6,7 @@
 
     <groupId>me.thomas-haas</groupId>
     <artifactId>spring-crypto-properties-support-aes</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Spring Security Crypto</name>
