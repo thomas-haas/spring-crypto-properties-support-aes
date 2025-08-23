@@ -106,5 +106,5 @@ mvn clean package
 This will generate the executable jar in:
 
 ```bash
-target/spring-security-crypto-cli-1.0.0.jar
+target/spring-security-crypto-cli-1.0.3.jar
 ```
