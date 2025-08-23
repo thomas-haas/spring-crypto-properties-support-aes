@@ -15,12 +15,20 @@
  */
 package com.thomas.haas.spring.crypto.properties.support.aes;
 
-import org.apache.commons.cli.*;
+
+import java.io.IOException;
+import java.security.SecureRandom;
+import java.text.ParseException;
+import java.util.HexFormat;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.help.HelpFormatter;
 import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
-
-import java.security.SecureRandom;
-import java.util.HexFormat;
 
 /**
  * {@code EncryptCommand} provides a simple command-line interface (CLI) to encrypt,
@@ -81,7 +89,7 @@ public class EncryptCommand {
 	        options.addOption(password);
 	
 	        CommandLineParser parser = new DefaultParser();
-	        HelpFormatter formatter = new HelpFormatter();
+	        HelpFormatter formatter = HelpFormatter.builder().get();
 	        CommandLine cmd;
 	
 	        try {
@@ -104,17 +112,31 @@ public class EncryptCommand {
 	                System.exit(0);
 	            } else {
 	                System.err.println("Invalid mode. Use 'encrypt', 'decrypt' or 'generate'.");
-	                formatter.printHelp("EncryptCommand", options);
+	                printHelp(formatter, options);
 	                System.exit(1);
 	            }
 	
-	        } catch (ParseException e) {
+	        } catch (org.apache.commons.cli.ParseException e) {
 	            System.err.println("Error parsing arguments: " + e.getMessage());
-	            formatter.printHelp("EncryptCommand", options);
+	            printHelp(formatter, options);
 	            System.exit(1);
 	        }
         }
     }
+    
+    /***
+     * Prints a manual how to use the CLI
+     * @param formatter
+     * @param options
+     */
+    private static void printHelp(HelpFormatter formatter, Options options) {
+        try {
+            formatter.printHelp("EncryptCommand", null, options, null, true);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not print help", e);
+        }
+    }
+
 
     /**
      * Encrypts the given plaintext with the specified password and outputs
