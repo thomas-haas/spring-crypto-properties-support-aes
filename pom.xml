@@ -19,8 +19,8 @@
 		<commons-cli.version>1.9.0</commons-cli.version>
 		<maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
 		<maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
-        <spring.boot.version>3.5.4</spring.boot.version>
-        <spring.security.crypto.version>6.5.2</spring.security.crypto.version>
+        <spring.boot.version>3.5.5</spring.boot.version>
+        <spring.security.crypto.version>6.5.3</spring.security.crypto.version>
     </properties>
     
     <distributionManagement>
