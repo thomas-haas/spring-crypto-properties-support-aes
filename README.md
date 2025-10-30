@@ -1,6 +1,6 @@
 # Spring Security Crypto CLI
 
-> Library for encrypting and decrypting properties in a Spring Boot Application. This project has no legal affiliation with the Spring Boot project.
+> Library for encrypting and decrypting properties in a Spring Boot application. This project is not affiliated with the Spring Boot project. Currently compatible with Java 25.
 
 ---
 
