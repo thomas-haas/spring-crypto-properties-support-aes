@@ -13,14 +13,13 @@
     <description>Library for encrypting and decrypting properties in a Spring Boot Application</description>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.release>25</maven.compiler.release>
 
 		<commons-cli.version>1.10.0</commons-cli.version>
-		<maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
-		<maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
-        <spring.boot.version>3.5.5</spring.boot.version>
-        <spring.security.crypto.version>6.5.3</spring.security.crypto.version>
+		<maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+		<maven-shade-plugin.version>3.6.1</maven-shade-plugin.version>
+        <spring.boot.version>3.5.7</spring.boot.version>
+        <spring.security.crypto.version>6.5.6</spring.security.crypto.version>
     </properties>
     
     <distributionManagement>
