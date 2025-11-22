@@ -19,19 +19,19 @@ You can then work directly on the console:
 
 ```bash
 # Encrypt
-java -jar spring-crypto-properties-support-aes-1.0.3.jar -m encrypt --password <password> --input <plainText>
+java -jar spring-crypto-properties-support-aes-1.2.0.jar -m encrypt --password <password> --input <plainText>
 
 # Decrypt
-java -jar spring-crypto-properties-support-aes-1.0.3.jar -m decrypt --password <password> --input <SECURE(ciphertext|salt)>
+java -jar spring-crypto-properties-support-aes-1.2.0.jar -m decrypt --password <password> --input <SECURE(ciphertext|salt)>
 
 # Generate a 32-byte secure random key
-java -jar spring-crypto-properties-support-aes-1.0.3.jar -m generate
+java -jar spring-crypto-properties-support-aes-1.2.0.jar -m generate
 ```
 
 ### 🔵 Example: Encrypt Text
 
 ```bash
-$ java -jar spring-crypto-properties-support-aes-1.0.3.jar -m encrypt --input "mySecretPassword123" --password "c7595f6f88cee46c8602f59dda757db2451a22eb18aec49ee862576e65628c51"
+$ java -jar spring-crypto-properties-support-aes-1.2.0.jar -m encrypt --input "mySecretPassword123" --password "c7595f6f88cee46c8602f59dda757db2451a22eb18aec49ee862576e65628c51"
 ```
 
 Output:
@@ -48,7 +48,7 @@ SECURE(f8e413c12b1653c833e9deda383671cf89686253990ac69ca7a2f26c4b34d49a44f8d6191
 ### 🟣 Example: Decrypt Text
 
 ```bash
-$ java -jar spring-crypto-properties-support-aes-1.0.3.jar -m decrypt --input "SECURE(f8e413c12b1653c833e9deda383671cf89686253990ac69ca7a2f26c4b34d49a44f8d61912a306497b0bbc97c7156226eeda9f|a0bd827b7eb0c6318fdcaaed195a594ebed69dcb2b81d6a908a22023ded4b4b1)" --password "c7595f6f88cee46c8602f59dda757db2451a22eb18aec49ee862576e65628c51"
+$ java -jar spring-crypto-properties-support-aes-1.2.0.jar -m decrypt --input "SECURE(f8e413c12b1653c833e9deda383671cf89686253990ac69ca7a2f26c4b34d49a44f8d61912a306497b0bbc97c7156226eeda9f|a0bd827b7eb0c6318fdcaaed195a594ebed69dcb2b81d6a908a22023ded4b4b1)" --password "c7595f6f88cee46c8602f59dda757db2451a22eb18aec49ee862576e65628c51"
 ```
 
 Output:
@@ -62,7 +62,7 @@ mySecretPassword123
 ### 🟣 Example: Generate Key
 
 ```bash
-$ java -jar spring-crypto-properties-support-aes-1.0.3.jar -m generate
+$ java -jar spring-crypto-properties-support-aes-1.2.0.jar -m generate
 ```
 
 Output:
@@ -106,5 +106,5 @@ mvn clean package
 This will generate the executable jar in:
 
 ```bash
-target/spring-security-crypto-cli-1.0.3.jar
+target/spring-security-crypto-cli-1.2.0.jar
 ```
