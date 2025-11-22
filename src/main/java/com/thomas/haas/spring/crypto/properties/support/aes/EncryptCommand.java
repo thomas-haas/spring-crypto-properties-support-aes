@@ -18,7 +18,6 @@ package com.thomas.haas.spring.crypto.properties.support.aes;
 
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.text.ParseException;
 import java.util.HexFormat;
 
 import org.apache.commons.cli.CommandLine;

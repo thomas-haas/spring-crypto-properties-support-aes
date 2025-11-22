@@ -20,8 +20,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.boot.EnvironmentPostProcessor;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
@@ -54,7 +54,7 @@ import org.springframework.security.crypto.encrypt.TextEncryptor;
  *
  * @author Thomas Haas
  */
-public class PropertyDecryptorPostProcessor implements EnvironmentPostProcessor, Ordered {
+public class PropertyDecryptorPostProcessor  implements EnvironmentPostProcessor, Ordered {
 
     private static final Pattern SECURE_PATTERN = Pattern.compile("^SECURE\\(([^|]+)\\|(.+)\\)$");
 
