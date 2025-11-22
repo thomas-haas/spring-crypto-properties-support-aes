@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thomas.haas.spring.crypto.properties.support.aes;
+package me.thomas.haas.spring.crypto.properties.support.aes;
 
 
 import java.io.IOException;

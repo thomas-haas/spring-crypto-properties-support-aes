@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thomas.haas.spring.crypto.properties.support.aes;
+package me.thomas.haas.spring.crypto.properties.support.aes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,7 +54,7 @@ import org.springframework.security.crypto.encrypt.TextEncryptor;
  *
  * @author Thomas Haas
  */
-public class PropertyDecryptorPostProcessor  implements EnvironmentPostProcessor, Ordered {
+public class PropertyDecryptorPostProcessor implements EnvironmentPostProcessor, Ordered {
 
     private static final Pattern SECURE_PATTERN = Pattern.compile("^SECURE\\(([^|]+)\\|(.+)\\)$");
 

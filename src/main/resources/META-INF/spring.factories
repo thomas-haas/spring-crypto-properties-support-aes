@@ -1,2 +1,2 @@
 org.springframework.boot.env.EnvironmentPostProcessor=\
-com.thomas.haas.spring.crypto.properties.support.aes.PropertyDecryptorPostProcessor
+me.thomas.haas.spring.crypto.properties.support.aes.PropertyDecryptorPostProcessor
