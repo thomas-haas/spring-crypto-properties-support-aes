@@ -15,11 +15,11 @@
     <properties>
         <maven.compiler.release>25</maven.compiler.release>
 
-		<commons-cli.version>1.10.0</commons-cli.version>
+		<commons-cli.version>1.11.0</commons-cli.version>
 		<maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
 		<maven-shade-plugin.version>3.6.1</maven-shade-plugin.version>
-        <spring.boot.version>3.5.7</spring.boot.version>
-        <spring.security.crypto.version>6.5.6</spring.security.crypto.version>
+        <spring.boot.version>4.0.0</spring.boot.version>
+        <spring.security.crypto.version>7.0.0</spring.security.crypto.version>
     </properties>
     
     <distributionManagement>
