@@ -9,6 +9,12 @@
 - Encrypt and decrypt text with Spring Security Crypto.
 - Decrypt properties from `application.properties` or `application.yml` on Spring Boot startup.
 - Use the `SECURE(encryptedText|salt)` value format.
+- Use the same compact JAR as an executable CLI and as a Spring Boot dependency.
+
+The executable JAR bundles only the CLI and cryptography implementation under
+internal package names. Spring Boot is supplied by the consuming application, so
+the JAR does not include Spring Web, an embedded server, or its own Spring Boot
+runtime.
 
 ---
 
@@ -18,19 +24,19 @@ After building the project, you will get an executable `.jar` file through the M
 
 ```bash
 # Encrypt
-java -jar spring-crypto-properties-support-aes-1.2.5.jar -m encrypt --password <password> --input <plainText>
+java -jar spring-crypto-properties-support-aes-1.2.6.jar -m encrypt --password <password> --input <plainText>
 
 # Decrypt
-java -jar spring-crypto-properties-support-aes-1.2.5.jar -m decrypt --password <password> --input <SECURE(ciphertext|salt)>
+java -jar spring-crypto-properties-support-aes-1.2.6.jar -m decrypt --password <password> --input <SECURE(ciphertext|salt)>
 
 # Generate a 32-byte secure random key
-java -jar spring-crypto-properties-support-aes-1.2.5.jar -m generate
+java -jar spring-crypto-properties-support-aes-1.2.6.jar -m generate
 ```
 
 ### Example: Encrypt Text
 
 ```bash
-$ java -jar spring-crypto-properties-support-aes-1.2.5.jar -m encrypt --input "mySecretPassword123" --password "c7595f6f88cee46c8602f59dda757db2451a22eb18aec49ee862576e65628c51"
+$ java -jar spring-crypto-properties-support-aes-1.2.6.jar -m encrypt --input "mySecretPassword123" --password "c7595f6f88cee46c8602f59dda757db2451a22eb18aec49ee862576e65628c51"
 ```
 
 Output:
@@ -47,7 +53,7 @@ SECURE(f8e413c12b1653c833e9deda383671cf89686253990ac69ca7a2f26c4b34d49a44f8d6191
 ### Example: Decrypt Text
 
 ```bash
-$ java -jar spring-crypto-properties-support-aes-1.2.5.jar -m decrypt --input "SECURE(f8e413c12b1653c833e9deda383671cf89686253990ac69ca7a2f26c4b34d49a44f8d61912a306497b0bbc97c7156226eeda9f|a0bd827b7eb0c6318fdcaaed195a594ebed69dcb2b81d6a908a22023ded4b4b1)" --password "c7595f6f88cee46c8602f59dda757db2451a22eb18aec49ee862576e65628c51"
+$ java -jar spring-crypto-properties-support-aes-1.2.6.jar -m decrypt --input "SECURE(f8e413c12b1653c833e9deda383671cf89686253990ac69ca7a2f26c4b34d49a44f8d61912a306497b0bbc97c7156226eeda9f|a0bd827b7eb0c6318fdcaaed195a594ebed69dcb2b81d6a908a22023ded4b4b1)" --password "c7595f6f88cee46c8602f59dda757db2451a22eb18aec49ee862576e65628c51"
 ```
 
 Output:
@@ -61,7 +67,7 @@ mySecretPassword123
 ### Example: Generate Key
 
 ```bash
-$ java -jar spring-crypto-properties-support-aes-1.2.5.jar -m generate
+$ java -jar spring-crypto-properties-support-aes-1.2.6.jar -m generate
 ```
 
 Output:
@@ -105,5 +111,5 @@ mvn clean package
 This generates the executable jar in:
 
 ```bash
-target/spring-crypto-properties-support-aes-1.2.5.jar
+target/spring-crypto-properties-support-aes-1.2.6.jar
 ```

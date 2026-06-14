@@ -31,21 +31,14 @@
 	</distributionManagement>
 
     <dependencies>
-        <!-- Spring Boot Starter Web (nur falls benötigt, sonst weg) -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring.boot.version}</version>
-        </dependency>
-
-        <!-- Spring Security Crypto -->
+        <!-- Bundled into the executable JAR under an internal namespace. -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-crypto</artifactId>
             <version>${spring.security.crypto.version}</version>
         </dependency>
 
-        <!-- (Optional) Spring Boot selbst für PostProcessor, falls benötigt -->
+        <!-- Supplied by the Spring Boot application using the library. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
@@ -53,10 +46,17 @@
             <scope>provided</scope>
         </dependency>
         
-		<dependency>
+        <dependency>
             <groupId>commons-cli</groupId>
             <artifactId>commons-cli</artifactId>
             <version>${commons-cli.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring.boot.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -84,6 +84,16 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.apache.commons.cli</pattern>
+                                    <shadedPattern>me.thomas.haas.spring.crypto.properties.support.aes.internal.cli</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.springframework.security.crypto</pattern>
+                                    <shadedPattern>me.thomas.haas.spring.crypto.properties.support.aes.internal.crypto</shadedPattern>
+                                </relocation>
+                            </relocations>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>me.thomas.haas.spring.crypto.properties.support.aes.EncryptCommand</mainClass>

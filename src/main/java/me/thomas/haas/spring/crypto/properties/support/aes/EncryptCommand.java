@@ -17,6 +17,8 @@ package me.thomas.haas.spring.crypto.properties.support.aes;
 
 
 import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.security.SecureRandom;
 import java.util.HexFormat;
 
@@ -26,6 +28,7 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.help.HelpFormatter;
+import org.apache.commons.cli.help.TextHelpAppendable;
 import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 
@@ -71,56 +74,65 @@ public class EncryptCommand {
      * @param args command-line arguments
      */
     public static void main(String[] args) {
-        // Check if arguments are provided
-        if (args != null && args.length > 0) {
-        	Options options = new Options();
-	
-	        Option mode = new Option("m", "mode", true, "Mode of operation (encrypt/decrypt/generate)");
-	        mode.setRequired(true);
-	        options.addOption(mode);
-	
-	        Option input = new Option("i", "input", true, "Text to process (only for encrypt/decrypt)");
-	        input.setRequired(false);
-	        options.addOption(input);
-	
-	        Option password = new Option("p", "password", true, "Password for encryption/decryption");
-	        password.setRequired(false);
-	        options.addOption(password);
-	
-	        CommandLineParser parser = new DefaultParser();
-	        HelpFormatter formatter = HelpFormatter.builder().get();
-	        CommandLine cmd;
-	
-	        try {
-	            cmd = parser.parse(options, args);
-	
-	            String modeValue = cmd.getOptionValue("mode");
-	
-	            if ("encrypt".equalsIgnoreCase(modeValue)) {
-	                require(cmd, "input");
-	                require(cmd, "password");
-	                encryptText(cmd.getOptionValue("input"), cmd.getOptionValue("password"));
-	                System.exit(0);
-	            } else if ("decrypt".equalsIgnoreCase(modeValue)) {
-	                require(cmd, "input");
-	                require(cmd, "password");
-	                decryptText(cmd.getOptionValue("input"), cmd.getOptionValue("password"));
-	                System.exit(0);
-	            } else if ("generate".equalsIgnoreCase(modeValue)) {
-	                generateKey();
-	                System.exit(0);
-	            } else {
-	                System.err.println("Invalid mode. Use 'encrypt', 'decrypt' or 'generate'.");
-	                printHelp(formatter, options);
-	                System.exit(1);
-	            }
-	
-	        } catch (org.apache.commons.cli.ParseException e) {
-	            System.err.println("Error parsing arguments: " + e.getMessage());
-	            printHelp(formatter, options);
-	            System.exit(1);
-	        }
+        System.exit(run(args, System.out, System.err));
+    }
+
+    static int run(String[] args, PrintStream out, PrintStream err) {
+        if (args == null || args.length == 0) {
+            return 0;
         }
+
+        Options options = createOptions();
+        PrintWriter helpWriter = new PrintWriter(out, true);
+        HelpFormatter formatter = HelpFormatter.builder()
+                .setHelpAppendable(new TextHelpAppendable(helpWriter))
+                .get();
+        CommandLineParser parser = new DefaultParser();
+
+        try {
+            CommandLine cmd = parser.parse(options, args);
+            String modeValue = cmd.getOptionValue("mode");
+
+            if ("encrypt".equalsIgnoreCase(modeValue)) {
+                require(cmd, "input");
+                require(cmd, "password");
+                out.println(encryptText(cmd.getOptionValue("input"), cmd.getOptionValue("password")));
+                return 0;
+            }
+            if ("decrypt".equalsIgnoreCase(modeValue)) {
+                require(cmd, "input");
+                require(cmd, "password");
+                out.println(decryptText(cmd.getOptionValue("input"), cmd.getOptionValue("password")));
+                return 0;
+            }
+            if ("generate".equalsIgnoreCase(modeValue)) {
+                out.println("Generated Key (32 bytes hex): " + generateSalt(32));
+                return 0;
+            }
+
+            err.println("Invalid mode. Use 'encrypt', 'decrypt' or 'generate'.");
+            printHelp(formatter, options, helpWriter);
+            return 1;
+        } catch (org.apache.commons.cli.ParseException e) {
+            err.println("Error parsing arguments: " + e.getMessage());
+            printHelp(formatter, options, helpWriter);
+            return 1;
+        } catch (CliException e) {
+            err.println(e.getMessage());
+            return e.exitCode;
+        }
+    }
+
+    private static Options createOptions() {
+        Options options = new Options();
+
+        Option mode = new Option("m", "mode", true, "Mode of operation (encrypt/decrypt/generate)");
+        mode.setRequired(true);
+        options.addOption(mode);
+
+        options.addOption(new Option("i", "input", true, "Text to process (only for encrypt/decrypt)"));
+        options.addOption(new Option("p", "password", true, "Password for encryption/decryption"));
+        return options;
     }
     
     /***
@@ -128,9 +140,10 @@ public class EncryptCommand {
      * @param formatter
      * @param options
      */
-    private static void printHelp(HelpFormatter formatter, Options options) {
+    private static void printHelp(HelpFormatter formatter, Options options, PrintWriter writer) {
         try {
             formatter.printHelp("EncryptCommand", null, options, null, true);
+            writer.flush();
         } catch (IOException e) {
             throw new RuntimeException("Could not print help", e);
         }
@@ -144,11 +157,11 @@ public class EncryptCommand {
      * @param plaintext      the text to encrypt
      * @param passwordValue  the password to use for encryption
      */
-    private static void encryptText(String plaintext, String passwordValue) {
+    private static String encryptText(String plaintext, String passwordValue) {
         String salt = generateSalt(32);
         TextEncryptor encryptor = Encryptors.delux(passwordValue, salt);
         String encrypted = encryptor.encrypt(plaintext);
-        System.out.println("SECURE(" + encrypted + "|" + salt + ")");
+        return "SECURE(" + encrypted + "|" + salt + ")";
     }
 
     /**
@@ -158,32 +171,21 @@ public class EncryptCommand {
      * @param encryptedText  the encrypted text to decrypt
      * @param passwordValue  the password to use for decryption
      */
-    private static void decryptText(String encryptedText, String passwordValue) {
+    private static String decryptText(String encryptedText, String passwordValue) {
         if (!encryptedText.startsWith("SECURE(") || !encryptedText.endsWith(")")) {
-            System.err.println("Input must be in format: SECURE(encryptedText|salt)");
-            System.exit(2);
+            throw new CliException(2, "Input must be in format: SECURE(encryptedText|salt)");
         }
 
         String[] parts = encryptedText.substring(7, encryptedText.length() - 1).split("\\|");
         if (parts.length != 2) {
-            System.err.println("Invalid SECURE format: should contain ciphertext and salt.");
-            System.exit(3);
+            throw new CliException(3, "Invalid SECURE format: should contain ciphertext and salt.");
         }
 
         String encrypted = parts[0];
         String salt = parts[1];
 
         TextEncryptor decryptor = Encryptors.delux(passwordValue, salt);
-        String decrypted = decryptor.decrypt(encrypted);
-        System.out.println(decrypted);
-    }
-
-    /**
-     * Generates and prints a random 32-byte hexadecimal salt string.
-     */
-    private static void generateKey() {
-        String key = generateSalt(32);
-        System.out.println("Generated Key (32 bytes hex): " + key);
+        return decryptor.decrypt(encrypted);
     }
 
     /**
@@ -207,8 +209,17 @@ public class EncryptCommand {
      */
     private static void require(CommandLine cmd, String option) {
         if (!cmd.hasOption(option)) {
-            System.err.println("Missing required option: --" + option);
-            System.exit(1);
+            throw new CliException(1, "Missing required option: --" + option);
+        }
+    }
+
+    private static final class CliException extends RuntimeException {
+
+        private final int exitCode;
+
+        private CliException(int exitCode, String message) {
+            super(message);
+            this.exitCode = exitCode;
         }
     }
 }
